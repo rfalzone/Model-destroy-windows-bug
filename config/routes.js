@@ -9,7 +9,8 @@
  */
 
 module.exports.routes = {
-
+  'POST /widget': 'WidgetController.createWidget',
+  'DELETE /widget/all': 'WidgetController.destroyAllWidgets',
   /***************************************************************************
   *                                                                          *
   * Make the view located at `views/homepage.ejs` your home page.            *
