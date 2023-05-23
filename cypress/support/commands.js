@@ -8,6 +8,7 @@ Cypress.Commands.add("postWidget", ({ name, description, price }) => {
       price,
     },
   });
+  cy.log("Widget Added");
 });
 
 Cypress.Commands.add("getWidgets", () => {
@@ -18,5 +19,7 @@ Cypress.Commands.add("getWidgets", () => {
 });
 
 Cypress.Commands.add("deleteWidgets", () => {
-  cy.request("DELETE", "http://localhost:1337/widget/all");
+  cy.request("DELETE", "http://localhost:1337/widget/all").then((res) => {
+    cy.log(res.body.message);
+  });
 });

@@ -16,21 +16,17 @@ describe("Debugging Test", () => {
       price: 1,
     });
 
-    cy.log("Widget Added");
-
     cy.getWidgets().then((widgets) => {
       expect(widgets.length).to.not.equal(0);
+      cy.log("widgets found");
       const [widget0, widget1] = widgets;
       expect(widget0.name).to.equal("Widget0");
       expect(widget0.description).to.equal("0Rules");
       expect(widget1.name).to.equal("Widget1");
       expect(widget1.description).to.equal("1Rules");
     });
-    cy.log("widgets found");
 
     cy.deleteWidgets();
-
-    cy.log("All widgets deleted");
 
     cy.getWidgets().then((widgets) => {
       expect(widgets.length).to.not.equal(0);
