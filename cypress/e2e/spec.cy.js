@@ -1,30 +1,35 @@
 describe("Debugging Test", () => {
-  it("Send POST request to create a widget and then retrieve it", () => {
+  beforeEach(() => {
+    cy.deleteWidgets();
+  });
+
+  it("Send POST request to create a widget and then retrieve it, then delete and retrieve", () => {
     // Send POST request to create a widget
-    cy.request({
-      method: "POST",
-      url: "http://localhost:1337/widgets",
-      body: {
-        // Provide any necessary data for creating the widget
-        // For example:
-        name: "Widget Name",
-        description: "Widget Description",
-        // Add more properties if needed
-      },
-    }).as("createWidget");
+    cy.postWidget({
+      name: "Widget0",
+      description: "0Rules",
+      price: 0,
+    });
+    cy.postWidget({
+      name: "Widget1",
+      description: "1Rules",
+      price: 1,
+    });
 
-    // Send GET request to retrieve the widget
-    cy.request("GET", "http://localhost:1337/widgets").then((response) => {
-      // Retrieve the created widget from the response
-      const widget = response.body;
+    cy.getWidgets().then((widgets) => {
+      expect(widgets.length).to.not.equal(0);
+      cy.log("widgets found");
+      const [widget0, widget1] = widgets;
+      expect(widget0.name).to.equal("Widget0");
+      expect(widget0.description).to.equal("0Rules");
+      expect(widget1.name).to.equal("Widget1");
+      expect(widget1.description).to.equal("1Rules");
+    });
 
-      // Perform assertions or further actions with the retrieved widget
-      expect(widget).to.have.property("name", "Widget Name");
-      expect(widget).to.have.property("description", "Widget Description");
-      // Add more assertions if needed
+    cy.deleteWidgets();
+
+    cy.getWidgets().then((widgets) => {
+      expect(widgets.length).to.not.equal(0);
     });
   });
 });
-
-
-
